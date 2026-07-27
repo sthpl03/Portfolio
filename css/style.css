@@ -255,9 +255,10 @@ a:hover {
   transition: stroke-dasharray 0.8s ease, opacity 0.8s ease;
 }
 
-/* Solid line (after click) */
-.connection-line.active {
-  stroke-dasharray: none;
+/* Solid line (after click or on hover) */
+.connection-line.active,
+.connection-line.hover {
+  stroke-dasharray: 1000 0;
   opacity: 0.9 !important;
 }
 

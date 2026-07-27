@@ -424,6 +424,51 @@ function onMouseMove(e) {
   }
 }
 
+// Touch Drag Support for Mobile
+let isDragging = false;
+let startTouchX = 0;
+let startTouchY = 0;
+let initialPanX = 0;
+let initialPanY = 0;
+
+document.addEventListener('touchstart', e => {
+  // Ignore touches if modal is active
+  if (overlay.classList.contains('active')) return;
+  
+  if (e.touches.length === 1) {
+    isDragging = true;
+    startTouchX = e.touches[0].clientX;
+    startTouchY = e.touches[0].clientY;
+    initialPanX = targetPanX;
+    
+    if (!hasMoved) {
+      hasMoved = true;
+      panHint.classList.add('hidden');
+    }
+  }
+});
+
+document.addEventListener('touchmove', e => {
+  if (!isDragging) return;
+  // Prevent default scroll when dragging the world
+  e.preventDefault();
+  
+  const dx = e.touches[0].clientX - startTouchX;
+  const dy = e.touches[0].clientY - startTouchY;
+  
+  const range = getPanRange();
+  const maxPanX = range.x / 2;
+  const maxPanY = range.y / 2;
+  
+  // Dragging directly alters the target pan, clamped to world limits
+  targetPanX = Math.max(-maxPanX, Math.min(maxPanX, initialPanX + dx * 1.5));
+  targetPanY = Math.max(-maxPanY, Math.min(maxPanY, initialPanY + dy * 1.5));
+}, { passive: false });
+
+document.addEventListener('touchend', () => {
+  isDragging = false;
+});
+
 function animatePan() {
   panX += (targetPanX - panX) * 0.06;
   panY += (targetPanY - panY) * 0.06;
@@ -467,9 +512,19 @@ document.addEventListener('keydown', e => {
 });
 
 /* ============================================
-   NODE CLICK HANDLERS
+   NODE HOVER & CLICK HANDLERS
    ============================================ */
 document.querySelectorAll('.category-node').forEach(node => {
+  node.addEventListener('mouseenter', () => {
+    const line = lineElements.get(node.id);
+    if (line) line.classList.add('hover');
+  });
+
+  node.addEventListener('mouseleave', () => {
+    const line = lineElements.get(node.id);
+    if (line) line.classList.remove('hover');
+  });
+
   node.addEventListener('click', () => {
     const key = node.dataset.section;
     activateLine(node.id);
