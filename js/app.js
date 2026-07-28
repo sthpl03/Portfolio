@@ -25,7 +25,6 @@ const SECTIONS = {
           </ul>
         </div>
       </div>
-      <a href="#" class="learn-more-btn">Learn More &rarr;</a>
     `,
   },
 
@@ -56,7 +55,7 @@ const SECTIONS = {
           </ul>
         </div>
       </div>
-      <a href="#" class="learn-more-btn">Learn More &rarr;</a>
+      <a href="./experience" class="learn-more-btn">Learn More &rarr;</a>
     `,
   },
 
@@ -77,7 +76,7 @@ const SECTIONS = {
           </ul>
         </div>
       </div>
-      <a href="#" class="learn-more-btn">Learn More &rarr;</a>
+      <a href="./projects" class="learn-more-btn">Learn More &rarr;</a>
     `,
   },
 
@@ -119,7 +118,7 @@ const SECTIONS = {
           </ul>
         </div>
       </div>
-      <a href="#" class="learn-more-btn">Learn More &rarr;</a>
+      <a href="./competitions" class="learn-more-btn">Learn More &rarr;</a>
     `,
   },
 
@@ -149,7 +148,7 @@ const SECTIONS = {
         <span class="skill-pill">React</span>
         <span class="skill-pill">TypeScript</span>
       </div>
-      <a href="#" class="learn-more-btn" style="margin-top: 24px;">Learn More &rarr;</a>
+      <a href="./about" class="learn-more-btn" style="margin-top: 24px;">Learn More &rarr;</a>
     `,
   },
 
@@ -213,6 +212,7 @@ const SECTIONS = {
           <button type="submit" class="form-submit">Send Message</button>
         </form>
       </div>
+      <a href="./contact" class="learn-more-btn" style="margin-top: 24px;">Learn More &rarr;</a>
     `,
   },
 };
