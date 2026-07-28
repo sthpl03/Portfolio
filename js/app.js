@@ -3,8 +3,8 @@
    ============================================ */
 const SECTIONS = {
   education: {
-    numeral: 'I',
-    title: 'Education',
+    numeral: "I",
+    title: "Education",
     content: `
       <div class="section-card">
         <h3 class="section-card__heading">Case Western Reserve University</h3>
@@ -26,12 +26,12 @@ const SECTIONS = {
         </div>
       </div>
       <a href="#" class="learn-more-btn">Learn More &rarr;</a>
-    `
+    `,
   },
 
   experience: {
-    numeral: 'II',
-    title: 'Experience & Leadership',
+    numeral: "II",
+    title: "Experience & Leadership",
     content: `
       <div class="section-card">
         <h3 class="section-card__heading">Johnson &amp; Johnson</h3>
@@ -57,12 +57,12 @@ const SECTIONS = {
         </div>
       </div>
       <a href="#" class="learn-more-btn">Learn More &rarr;</a>
-    `
+    `,
   },
 
   projects: {
-    numeral: 'III',
-    title: 'Technical Projects',
+    numeral: "III",
+    title: "Technical Projects",
     content: `
       <div class="section-card">
         <h3 class="section-card__heading">Educational Prep Games</h3>
@@ -78,12 +78,12 @@ const SECTIONS = {
         </div>
       </div>
       <a href="#" class="learn-more-btn">Learn More &rarr;</a>
-    `
+    `,
   },
 
   competitions: {
-    numeral: 'V',
-    title: 'Competitions',
+    numeral: "V",
+    title: "Competitions",
     content: `
       <div class="section-card">
         <h3 class="section-card__heading">TSA Webmaster Competition</h3>
@@ -91,7 +91,7 @@ const SECTIONS = {
         <div class="section-card__body">
           <ul>
             <li>Ranked 9th in a state-wide team competition as a duo team</li>
-            <li>Built approximately 80% of the website using HTML, CSS, JavaScript, and Bootstrap</li>
+            <li>Built most of the website using HTML, CSS, JavaScript, and Bootstrap</li>
             <li>Hosted on GitHub Pages with remote collaboration</li>
           </ul>
         </div>
@@ -102,7 +102,7 @@ const SECTIONS = {
         <div class="section-card__body">
           <ul>
             <li>Ranked top 4 in division in a national online coding competition</li>
-            <li>Solved approximately 80% of engineering and algorithmic problems using Python and Java</li>
+            <li>Solved most of engineering and algorithmic problems using Python and Java</li>
             <li>Persisted until the competition ended after all teammates had left</li>
           </ul>
         </div>
@@ -113,19 +113,19 @@ const SECTIONS = {
         <div class="section-card__body">
           <ul>
             <li>Ranked top 25% out of 500+ teams in a cybersecurity CTF</li>
-            <li>Solved approximately 90% of team challenges, reaching 8,875 points</li>
+            <li>Solved most of team challenges, reaching 8,875 points</li>
             <li>Covered crypto, forensics, OSINT, web security, binary exploitation, networking</li>
             <li>Utilized AI, virtual machines, Wireshark, CyberChef, and more</li>
           </ul>
         </div>
       </div>
       <a href="#" class="learn-more-btn">Learn More &rarr;</a>
-    `
+    `,
   },
 
   skills: {
-    numeral: 'IV',
-    title: 'Technical Skills',
+    numeral: "IV",
+    title: "Technical Skills",
     content: `
       <p class="skills-category">Languages</p>
       <div class="skills-grid" style="margin-bottom:24px;">
@@ -150,12 +150,12 @@ const SECTIONS = {
         <span class="skill-pill">TypeScript</span>
       </div>
       <a href="#" class="learn-more-btn" style="margin-top: 24px;">Learn More &rarr;</a>
-    `
+    `,
   },
 
   contact: {
-    numeral: 'VI',
-    title: 'Contact',
+    numeral: "VI",
+    title: "Contact",
     content: `
       <div class="contact-links">
         <a href="mailto:carlos.mendezchiriboga@case.edu" class="contact-link">
@@ -213,24 +213,28 @@ const SECTIONS = {
           <button type="submit" class="form-submit">Send Message</button>
         </form>
       </div>
-    `
-  }
+    `,
+  },
 };
 
 /* ============================================
    DOM REFERENCES
    ============================================ */
-const world = document.getElementById('world');
-const svg = document.getElementById('connections-svg');
-const centerEl = document.getElementById('center-node');
-const overlay = document.getElementById('modal-overlay');
-const modalContent = document.getElementById('modal-content');
-const modalClose = document.getElementById('modal-close');
-const panHint = document.getElementById('pan-hint');
+const world = document.getElementById("world");
+const svg = document.getElementById("connections-svg");
+const centerEl = document.getElementById("center-node");
+const overlay = document.getElementById("modal-overlay");
+const modalContent = document.getElementById("modal-content");
+const modalClose = document.getElementById("modal-close");
+const panHint = document.getElementById("pan-hint");
 
 const categoryIds = [
-  'node-education', 'node-experience', 'node-projects',
-  'node-skills', 'node-competitions', 'node-contact'
+  "node-education",
+  "node-experience",
+  "node-projects",
+  "node-skills",
+  "node-competitions",
+  "node-contact",
 ];
 
 // Track which nodes have been "connected" (clicked)
@@ -258,24 +262,24 @@ function setupWorld() {
 
   // Size the world and center it so the middle of the world
   // is exactly at the middle of the viewport (when pan = 0)
-  world.style.width = worldW + 'px';
-  world.style.height = worldH + 'px';
-  world.style.left = -(worldW - vw) / 2 + 'px';
-  world.style.top = -(worldH - vh) / 2 + 'px';
+  world.style.width = worldW + "px";
+  world.style.height = worldH + "px";
+  world.style.left = -(worldW - vw) / 2 + "px";
+  world.style.top = -(worldH - vh) / 2 + "px";
 
   // Size SVG to match world
-  svg.setAttribute('width', worldW);
-  svg.setAttribute('height', worldH);
-  svg.style.width = worldW + 'px';
-  svg.style.height = worldH + 'px';
+  svg.setAttribute("width", worldW);
+  svg.setAttribute("height", worldH);
+  svg.style.width = worldW + "px";
+  svg.style.height = worldH + "px";
 
   const cx = worldW / 2;
   const cy = worldH / 2;
 
   // ---- Place center node ----
-  centerEl.style.left = cx + 'px';
-  centerEl.style.top = cy + 'px';
-  nodePositions.set('center-node', { x: cx, y: cy });
+  centerEl.style.left = cx + "px";
+  centerEl.style.top = cy + "px";
+  nodePositions.set("center-node", { x: cx, y: cy });
 
   // ---- Randomly place category nodes ----
   // Safe area limits (relative to cx/cy) so nodes remain fully visible and reachable.
@@ -321,8 +325,8 @@ function setupWorld() {
     const x = cx + currentR * Math.cos(polar.angle);
     const y = cy + currentR * Math.sin(polar.angle);
 
-    el.style.left = x + 'px';
-    el.style.top = y + 'px';
+    el.style.left = x + "px";
+    el.style.top = y + "px";
 
     // Add staggered entrance animation (center fades in from 0.2s to 1.2s, so we stagger after)
     const delay = 600 + i * 150;
@@ -339,21 +343,21 @@ function setupWorld() {
    DOTTED LINES (visible from the start)
    ============================================ */
 function drawAllDottedLines() {
-  svg.innerHTML = '';
+  svg.innerHTML = "";
   lineElements.clear();
 
-  const center = nodePositions.get('center-node');
+  const center = nodePositions.get("center-node");
 
   categoryIds.forEach((id, i) => {
     const pos = nodePositions.get(id);
     if (!center || !pos) return;
 
-    const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-    line.classList.add('connection-line');
-    line.setAttribute('x1', center.x);
-    line.setAttribute('y1', center.y);
-    line.setAttribute('x2', pos.x);
-    line.setAttribute('y2', pos.y);
+    const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+    line.classList.add("connection-line");
+    line.setAttribute("x1", center.x);
+    line.setAttribute("y1", center.y);
+    line.setAttribute("x2", pos.x);
+    line.setAttribute("y2", pos.y);
 
     // Stagger line animation to match its node
     const delay = 600 + i * 150;
@@ -361,24 +365,24 @@ function drawAllDottedLines() {
 
     // If already connected, make it solid
     if (connectedNodes.has(id)) {
-      line.classList.add('active');
+      line.classList.add("active");
     }
 
     svg.appendChild(line);
     lineElements.set(id, line);
 
     // Endpoint dot (only visible if connected)
-    const dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-    dot.classList.add('connection-dot');
-    dot.setAttribute('cx', pos.x);
-    dot.setAttribute('cy', pos.y);
-    dot.setAttribute('r', '2.5');
+    const dot = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    dot.classList.add("connection-dot");
+    dot.setAttribute("cx", pos.x);
+    dot.setAttribute("cy", pos.y);
+    dot.setAttribute("r", "2.5");
     if (connectedNodes.has(id)) {
-      dot.classList.add('active');
+      dot.classList.add("active");
     }
     svg.appendChild(dot);
     // Store dot reference alongside line
-    lineElements.set(id + '-dot', dot);
+    lineElements.set(id + "-dot", dot);
   });
 }
 
@@ -390,16 +394,16 @@ function activateLine(nodeId) {
   connectedNodes.add(nodeId);
 
   const el = document.getElementById(nodeId);
-  el.classList.add('connected');
+  el.classList.add("connected");
 
   const line = lineElements.get(nodeId);
   if (line) {
-    line.classList.add('active');
+    line.classList.add("active");
   }
 
-  const dot = lineElements.get(nodeId + '-dot');
+  const dot = lineElements.get(nodeId + "-dot");
   if (dot) {
-    dot.classList.add('active');
+    dot.classList.add("active");
   }
 }
 
@@ -426,7 +430,7 @@ const DRAG_THRESHOLD = 8;
 function getPanRange() {
   return {
     x: window.innerWidth * (WORLD_SCALE - 1),
-    y: window.innerHeight * (WORLD_SCALE - 1)
+    y: window.innerHeight * (WORLD_SCALE - 1),
   };
 }
 
@@ -436,21 +440,21 @@ function clampPan(x, y) {
   const maxPanY = range.y / 2;
   return {
     x: Math.max(-maxPanX, Math.min(maxPanX, x)),
-    y: Math.max(-maxPanY, Math.min(maxPanY, y))
+    y: Math.max(-maxPanY, Math.min(maxPanY, y)),
   };
 }
 
 function isPanBlockedTarget(target) {
   return (
-    overlay.classList.contains('active') ||
-    target.closest('.modal-overlay') ||
-    target.closest('.bottom-bar')
+    overlay.classList.contains("active") ||
+    target.closest(".modal-overlay") ||
+    target.closest(".bottom-bar")
   );
 }
 
 function onPointerDown(e) {
   if (isPanBlockedTarget(e.target)) return;
-  if (e.button !== 0 && e.pointerType === 'mouse') return;
+  if (e.button !== 0 && e.pointerType === "mouse") return;
 
   isDragging = true;
   activePointerId = e.pointerId;
@@ -461,7 +465,7 @@ function onPointerDown(e) {
   pointerTravel = 0;
   suppressNextClick = false;
 
-  document.body.classList.add('is-dragging');
+  document.body.classList.add("is-dragging");
   e.currentTarget.setPointerCapture(e.pointerId);
 }
 
@@ -476,7 +480,7 @@ function onPointerMove(e) {
     suppressNextClick = true;
     if (!hasMoved) {
       hasMoved = true;
-      panHint.classList.add('hidden');
+      panHint.classList.add("hidden");
     }
   }
 
@@ -492,7 +496,7 @@ function onPointerUp(e) {
 
   isDragging = false;
   activePointerId = null;
-  document.body.classList.remove('is-dragging');
+  document.body.classList.remove("is-dragging");
 
   if (e.currentTarget.hasPointerCapture(e.pointerId)) {
     e.currentTarget.releasePointerCapture(e.pointerId);
@@ -509,10 +513,10 @@ function animatePan() {
   requestAnimationFrame(animatePan);
 }
 
-document.addEventListener('pointerdown', onPointerDown);
-document.addEventListener('pointermove', onPointerMove);
-document.addEventListener('pointerup', onPointerUp);
-document.addEventListener('pointercancel', onPointerUp);
+document.addEventListener("pointerdown", onPointerDown);
+document.addEventListener("pointermove", onPointerMove);
+document.addEventListener("pointerup", onPointerUp);
+document.addEventListener("pointercancel", onPointerUp);
 requestAnimationFrame(animatePan);
 
 /* ============================================
@@ -531,36 +535,36 @@ function openModal(sectionKey) {
     ${section.content}
   `;
 
-  overlay.classList.add('active');
+  overlay.classList.add("active");
 }
 
 function closeModal() {
-  overlay.classList.remove('active');
+  overlay.classList.remove("active");
 }
 
-modalClose.addEventListener('click', closeModal);
-overlay.addEventListener('click', e => {
+modalClose.addEventListener("click", closeModal);
+overlay.addEventListener("click", (e) => {
   if (e.target === overlay) closeModal();
 });
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') closeModal();
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") closeModal();
 });
 
 /* ============================================
    NODE HOVER & CLICK HANDLERS
    ============================================ */
-document.querySelectorAll('.category-node').forEach(node => {
-  node.addEventListener('mouseenter', () => {
+document.querySelectorAll(".category-node").forEach((node) => {
+  node.addEventListener("mouseenter", () => {
     const line = lineElements.get(node.id);
-    if (line) line.classList.add('hover');
+    if (line) line.classList.add("hover");
   });
 
-  node.addEventListener('mouseleave', () => {
+  node.addEventListener("mouseleave", () => {
     const line = lineElements.get(node.id);
-    if (line) line.classList.remove('hover');
+    if (line) line.classList.remove("hover");
   });
 
-  node.addEventListener('click', () => {
+  node.addEventListener("click", () => {
     if (suppressNextClick) {
       suppressNextClick = false;
       return;
@@ -574,10 +578,10 @@ document.querySelectorAll('.category-node').forEach(node => {
 /* ============================================
    INIT
    ============================================ */
-window.addEventListener('DOMContentLoaded', () => {
+window.addEventListener("DOMContentLoaded", () => {
   setupWorld();
 });
 
-window.addEventListener('resize', () => {
+window.addEventListener("resize", () => {
   setupWorld();
 });
