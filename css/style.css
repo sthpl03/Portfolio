@@ -12,8 +12,8 @@
   --border-active: rgba(0, 0, 0, 0.5);
 
   /* Fonts — elegant serifs */
-  --font-display: 'Cormorant Garamond', 'Times New Roman', Georgia, serif;
-  --font-body: 'Lora', 'Times New Roman', Georgia, serif;
+  --font-display: "Cormorant Garamond", "Times New Roman", Georgia, serif;
+  --font-body: "Lora", "Times New Roman", Georgia, serif;
 
   /* Misc */
   --transition-fast: 0.2s ease;
@@ -75,11 +75,10 @@ a:hover {
 
 /* Subtle dot grid texture */
 #world::before {
-  content: '';
+  content: "";
   position: absolute;
   inset: 0;
-  background-image:
-    radial-gradient(circle, rgba(0, 0, 0, 0.04) 1px, transparent 1px);
+  background-image: radial-gradient(circle, rgba(0, 0, 0, 0.04) 1px, transparent 1px);
   background-size: 60px 60px;
   pointer-events: none;
 }
@@ -103,7 +102,7 @@ a:hover {
 }
 
 .center-node::before {
-  content: '';
+  content: "";
   position: absolute;
   width: 120%;
   height: 140%;
@@ -219,7 +218,7 @@ a:hover {
 }
 
 .category-node__label::before {
-  content: '';
+  content: "";
   position: absolute;
   left: 50%;
   top: 50%;
@@ -260,8 +259,12 @@ a:hover {
 }
 
 @keyframes fade-in-line {
-  from { opacity: 0; }
-  to { opacity: 0.6; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 0.6;
+  }
 }
 
 /* Dotted line (default — before click) */
@@ -271,7 +274,9 @@ a:hover {
   fill: none;
   opacity: 0; /* starts hidden for animation */
   stroke-dasharray: 4 8;
-  transition: stroke-dasharray 0.8s ease, opacity 0.8s ease;
+  transition:
+    stroke-dasharray 0.8s ease,
+    opacity 0.8s ease;
 }
 
 /* Solid line (after click or on hover) */
@@ -305,7 +310,9 @@ a:hover {
   background: rgba(245, 242, 235, 0.97);
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.4s ease, visibility 0.4s ease;
+  transition:
+    opacity 0.4s ease,
+    visibility 0.4s ease;
 }
 
 .modal-overlay.active {
@@ -432,7 +439,7 @@ a:hover {
 }
 
 .section-card__body li::before {
-  content: '—';
+  content: "—";
   position: absolute;
   left: 0;
   color: var(--fg-muted);
@@ -498,7 +505,6 @@ a:hover {
   color: var(--fg-secondary);
   font-size: 0.88rem;
   text-decoration: none;
-  border-bottom: none;
   transition: all var(--transition-fast);
 }
 
