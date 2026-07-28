@@ -323,7 +323,7 @@ function setupWorld() {
 
     el.style.left = x + 'px';
     el.style.top = y + 'px';
-    
+
     // Add staggered entrance animation (center fades in from 0.2s to 1.2s, so we stagger after)
     const delay = 600 + i * 150;
     el.style.animation = `fade-in-up 1s ease ${delay}ms forwards`;
@@ -404,13 +404,24 @@ function activateLine(nodeId) {
 }
 
 /* ============================================
-   CURSOR-BASED PANNING
+   DRAG-BASED PANNING
    ============================================ */
 let panX = 0;
 let panY = 0;
 let targetPanX = 0;
 let targetPanY = 0;
 let hasMoved = false;
+
+let isDragging = false;
+let activePointerId = null;
+let startPointerX = 0;
+let startPointerY = 0;
+let initialPanX = 0;
+let initialPanY = 0;
+let pointerTravel = 0;
+let suppressNextClick = false;
+
+const DRAG_THRESHOLD = 8;
 
 function getPanRange() {
   return {
@@ -419,77 +430,89 @@ function getPanRange() {
   };
 }
 
-function onMouseMove(e) {
+function clampPan(x, y) {
   const range = getPanRange();
-  // Normalize mouse position to -0.5 … +0.5
-  const nx = (e.clientX / window.innerWidth) - 0.5;
-  const ny = (e.clientY / window.innerHeight) - 0.5;
-
-  targetPanX = -nx * range.x;
-  targetPanY = -ny * range.y;
-
-  if (!hasMoved) {
-    hasMoved = true;
-    panHint.classList.add('hidden');
-  }
+  const maxPanX = range.x / 2;
+  const maxPanY = range.y / 2;
+  return {
+    x: Math.max(-maxPanX, Math.min(maxPanX, x)),
+    y: Math.max(-maxPanY, Math.min(maxPanY, y))
+  };
 }
 
-// Touch Drag Support for Mobile
-let isDragging = false;
-let startTouchX = 0;
-let startTouchY = 0;
-let initialPanX = 0;
-let initialPanY = 0;
+function isPanBlockedTarget(target) {
+  return (
+    overlay.classList.contains('active') ||
+    target.closest('.modal-overlay') ||
+    target.closest('.bottom-bar')
+  );
+}
 
-document.addEventListener('touchstart', e => {
-  // Ignore touches if modal is active
-  if (overlay.classList.contains('active')) return;
-  
-  if (e.touches.length === 1) {
-    isDragging = true;
-    startTouchX = e.touches[0].clientX;
-    startTouchY = e.touches[0].clientY;
-    initialPanX = targetPanX;
-    
+function onPointerDown(e) {
+  if (isPanBlockedTarget(e.target)) return;
+  if (e.button !== 0 && e.pointerType === 'mouse') return;
+
+  isDragging = true;
+  activePointerId = e.pointerId;
+  startPointerX = e.clientX;
+  startPointerY = e.clientY;
+  initialPanX = targetPanX;
+  initialPanY = targetPanY;
+  pointerTravel = 0;
+  suppressNextClick = false;
+
+  document.body.classList.add('is-dragging');
+  e.currentTarget.setPointerCapture(e.pointerId);
+}
+
+function onPointerMove(e) {
+  if (!isDragging || e.pointerId !== activePointerId) return;
+
+  const dx = e.clientX - startPointerX;
+  const dy = e.clientY - startPointerY;
+  pointerTravel = Math.max(pointerTravel, Math.hypot(dx, dy));
+
+  if (pointerTravel >= DRAG_THRESHOLD) {
+    suppressNextClick = true;
     if (!hasMoved) {
       hasMoved = true;
       panHint.classList.add('hidden');
     }
   }
-});
 
-document.addEventListener('touchmove', e => {
-  if (!isDragging) return;
-  // Prevent default scroll when dragging the world
-  e.preventDefault();
-  
-  const dx = e.touches[0].clientX - startTouchX;
-  const dy = e.touches[0].clientY - startTouchY;
-  
-  const range = getPanRange();
-  const maxPanX = range.x / 2;
-  const maxPanY = range.y / 2;
-  
-  // Dragging directly alters the target pan, clamped to world limits
-  targetPanX = Math.max(-maxPanX, Math.min(maxPanX, initialPanX + dx * 1.5));
-  targetPanY = Math.max(-maxPanY, Math.min(maxPanY, initialPanY + dy * 1.5));
-}, { passive: false });
+  const clamped = clampPan(initialPanX + dx, initialPanY + dy);
+  targetPanX = clamped.x;
+  targetPanY = clamped.y;
+  panX = targetPanX;
+  panY = targetPanY;
+}
 
-document.addEventListener('touchend', () => {
+function onPointerUp(e) {
+  if (!isDragging || e.pointerId !== activePointerId) return;
+
   isDragging = false;
-});
+  activePointerId = null;
+  document.body.classList.remove('is-dragging');
+
+  if (e.currentTarget.hasPointerCapture(e.pointerId)) {
+    e.currentTarget.releasePointerCapture(e.pointerId);
+  }
+}
 
 function animatePan() {
-  // Use a faster lerp rate while dragging so it feels responsive on touch
-  const lerp = isDragging ? 0.35 : 0.06;
-  panX += (targetPanX - panX) * lerp;
-  panY += (targetPanY - panY) * lerp;
+  if (!isDragging) {
+    panX += (targetPanX - panX) * 0.12;
+    panY += (targetPanY - panY) * 0.12;
+  }
 
   world.style.transform = `translate3d(${panX}px, ${panY}px, 0)`;
   requestAnimationFrame(animatePan);
 }
 
-document.addEventListener('mousemove', onMouseMove);
+document.addEventListener('pointerdown', onPointerDown);
+document.addEventListener('pointermove', onPointerMove);
+document.addEventListener('pointerup', onPointerUp);
+document.addEventListener('pointercancel', onPointerUp);
 requestAnimationFrame(animatePan);
 
 /* ============================================
@@ -538,6 +561,10 @@ document.querySelectorAll('.category-node').forEach(node => {
   });
 
   node.addEventListener('click', () => {
+    if (suppressNextClick) {
+      suppressNextClick = false;
+      return;
+    }
     const key = node.dataset.section;
     activateLine(node.id);
     openModal(key);

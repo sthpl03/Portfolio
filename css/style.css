@@ -18,6 +18,7 @@
   /* Misc */
   --transition-fast: 0.2s ease;
   --transition-smooth: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  --text-glow: radial-gradient(ellipse at center, var(--bg) 40%, transparent 70%);
 }
 
 /* ============================================
@@ -43,6 +44,7 @@ body {
   height: 100vh;
   width: 100vw;
   cursor: default;
+  touch-action: none;
 }
 
 a {
@@ -67,6 +69,8 @@ a:hover {
 #world {
   position: absolute;
   will-change: transform;
+  touch-action: none;
+  cursor: grab;
 }
 
 /* Subtle dot grid texture */
@@ -103,7 +107,7 @@ a:hover {
   position: absolute;
   width: 120%;
   height: 140%;
-  background: radial-gradient(ellipse at center, var(--bg) 40%, transparent 70%);
+  background: var(--text-glow);
   z-index: -1;
   pointer-events: none;
 }
@@ -203,6 +207,8 @@ a:hover {
 }
 
 .category-node__label {
+  position: relative;
+  z-index: 0;
   font-family: var(--font-display);
   font-size: 0.9rem;
   font-weight: 400;
@@ -210,6 +216,19 @@ a:hover {
   text-transform: uppercase;
   color: var(--fg-muted);
   transition: color var(--transition-fast);
+}
+
+.category-node__label::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 160%;
+  height: 220%;
+  transform: translate(-50%, -50%);
+  background: var(--text-glow);
+  z-index: -1;
+  pointer-events: none;
 }
 
 .category-node__action {
@@ -633,10 +652,14 @@ a:hover {
 }
 
 /* ============================================
-   CURSOR
+   DRAG CURSOR
    ============================================ */
-#world {
-  cursor: grab;
+body.is-dragging #world {
+  cursor: grabbing;
+}
+
+body.is-dragging .category-node {
+  cursor: grabbing;
 }
 
 /* ============================================
